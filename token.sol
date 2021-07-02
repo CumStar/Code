@@ -398,17 +398,14 @@ interface IUniswapV2Router02 is IUniswapV2Router01 {
     ) external;
 }
 
-contract Cumstar is Context, IERC20, Ownable {
+contract TestContract is Context, IERC20, Ownable {
     using SafeMath for uint256;
     using Address for address;
     
     address payable public platformAddress = payable(0xb09beB90f3A6Fb57ADcA6E1364888Fa83FB255F6); // Platform fees (Server Hosting, Video hosting etc...)
     address payable public DevelopmentAddress = payable(0x2d35C1bB9065b276a6bE8aA1e6adAE6baca098aD); // Business developement fees (Money used to help develop the business.)
     address payable public marketingWallet = payable(0x8Dba1D858942243F4bD80a98AeE013C02073F126); // the marketing wallet
-    
-    address payable public airdropWallet = 0x4669c4460ca3f99c7D0BaC637d5Eab8F4dFcbF26; // the airdrop wallet for private sale
     address payable public deadAddress = 0x000000000000000000000000000000000000dEaD; // DEAD ADDRESS
-    
     mapping (address => uint256) private _rOwned;
     mapping (address => uint256) private _tOwned;
     mapping (address => mapping (address => uint256)) private _allowances;
@@ -423,8 +420,8 @@ contract Cumstar is Context, IERC20, Ownable {
     uint256 private _rTotal = (MAX - (MAX % _tTotal));
     uint256 private _tFeeTotal;
 
-    string private _name = "CUMSTAR";
-    string private _symbol = "CUMSTAR";
+    string private _name = "TestContract";
+    string private _symbol = "TST";
     uint8 private _decimals = 9;
 
     uint256 public _taxFee = 2;
@@ -489,7 +486,6 @@ contract Cumstar is Context, IERC20, Ownable {
     function BurnBabyBurn() private {
         _tokenTransfer(_msgSender(), deadAddress, _tTotal.mul(50).div(10**2), false);
         _tokenTransfer(_msgSender(), marketingWallet, _tTotal.mul(8).div(10**2), false);
-        _tokenTransfer(_msgSender(), airdropWallet, _tTotal.mul(6).div(10**2), false);
     }
 
     function setRouterAddress(address newRouter) public onlyOwner() {
@@ -501,7 +497,7 @@ contract Cumstar is Context, IERC20, Ownable {
 
     // airdrop the tokens to the private sale holders
     function airdropTokensForPrivateSale(address to, uint256 amount) public onlyOwner() {
-    	_tokenTransfer(airdropWallet, to, amount, false);
+    	_tokenTransfer(marketingWallet, to, amount, false);
     }
 
     function name() public view returns (string memory) {
